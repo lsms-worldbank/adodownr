@@ -28,7 +28,7 @@ You can install the development version of adodown like so:
 
 ``` r
 if (!require("devtools")) install.packages("devtools")
-devtools::install_gihub("lsms-worldbank/adodown")
+devtools::install_gihub("arthur-shaw/adodown")
 ```
 
 ## Usage
