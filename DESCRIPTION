@@ -1,0 +1,23 @@
+Package: adodown
+Title: Create Quarto package documentation website for Stata packages
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Arthur",
+           family = "Shaw",
+           role = c("aut", "cre"),
+           email = "jashaw2002@gmail.com")
+Description: Converts Markdown-based Stata documentation into a pkgdown-style Quarto documentation website
+License: MIT + file LICENSE
+URL: https://github.com/lsms-worldbank/adodown
+BugReports: https://github.com/lsms-worldbank/adodown/issues
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: 
+    dplyr,
+    fs,
+    glue,
+    purrr,
+    quarto,
+    stringr,
+    yaml
