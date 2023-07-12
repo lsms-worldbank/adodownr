@@ -50,3 +50,12 @@ adodown::build_site(
   site_dir = "desired/path/of/documentation/site"
 )
 ```
+
+## Inspiration
+
+This package draws heavy inspiration from two packages:
+
+- [pkgdown](https://github.com/r-lib/pkgdown/), the best known R package
+  for documentation websites
+- [ecodown](https://github.com/edgararuiz/ecodown), an experimental
+  effort to use Quarto for the same purpose
