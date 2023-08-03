@@ -51,7 +51,8 @@ compose_quarto_yaml <- function(
 
     spec <- list(
         project = list(
-            type = "website"
+            type = "website",
+            `output-dir` = "docs"
         ),
         website = list(
             title = pkg$name,
