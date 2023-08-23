@@ -1,18 +1,18 @@
 #' Build Quarto files from Markdown
-#' 
-#' @description 
-#' Build content files such reference or vignette, converting from 
+#'
+#' @description
+#' Build content files such reference or vignette, converting from
 #' Markdown to Quarto
-#' 
+#'
 #' @param dir_in Character. Source package directory where files are located.
 #' @param dir_out Character. Target site directory where files are written.
-#' 
+#'
 #' @importFrom fs dir_ls
 #' @importFrom purrr walk
-#' 
+#'
 #' @return None. Side-effect of writing several files to disk.
-#' 
-#' @export 
+#'
+#' @export
 build_files <- function(
     dir_in,
     dir_out
@@ -31,16 +31,16 @@ build_files <- function(
 }
 
 #' Get short description of command from help file
-#' 
-#' @description 
+#'
+#' @description
 #' The command short description has the following format:
 #' `commandname - This command is used for short description.`
-#' 
+#'
 #' @param file Character. Path to source help file
-#' 
+#'
 #' @importFrom dplyr filter
 #' @importFrom stringr str_detect
-#' 
+#'
 #' @return Character. Short description of command from help file title
 get_cmd_short_desc <- function(file) {
 
@@ -72,17 +72,17 @@ get_cmd_short_desc <- function(file) {
 }
 
 #' Build reference index from files in source package help folder
-#' 
+#'
 #' @param dir_in Character. Help/reference file folder of source package.
 #' @param dir_out Character. Reference foler of target documentation site.
-#' 
+#'
 #' @importFrom fs dir_ls path_file path_ext_remove path
 #' @importFrom purrr map_chr pmap_chr
 #' @importFrom glue glue
-#' 
+#'
 #' @return None. Side-effect of writing a file to disk
-#' 
-#' @export 
+#'
+#' @export
 build_reference_index <- function(dir_in, dir_out) {
 
     help_pkg_paths <- fs::dir_ls(path = dir_in, regexp = "\\.md$")
@@ -130,27 +130,27 @@ build_reference_index <- function(dir_in, dir_out) {
 }
 
 #' Build Quarto site from Stata package files
-#' 
-#' @description 
+#'
+#' @description
 #' This single function performs several actions:
-#' 
+#'
 #' - Creates folders for the Quarto site
 #' - Converts Markdown files to Quarto format, using some opinionated methods
-#' - Builds a command reference index, creating a table of functions, links, 
+#' - Builds a command reference index, creating a table of functions, links,
 #' and descriptions
 #' - Copies the package logo over
 #' - Composes and writes a Quarto YAML file, implementing an opinionated
 #' layout and feeding forward some package and assets into relevant
 #' places
 #' - Opens a preview of the Quarto documentation website
-#' 
+#'
 #' @param pkg_dir Charcter. Directory of the source package.
 #' @param site_dir Charcter. Directory of the target site.
-#' 
+#'
 #' @importFrom fs file_move path file_exists
 #' @importFrom quarto quarto_path quarto_preview
-#' 
-#' @export 
+#'
+#' @export
 build_site <- function(
     pkg_dir,
     site_dir
@@ -203,7 +203,7 @@ build_site <- function(
 
     # copy logo over
     pkg_logo <- find_file_in_pkg(
-        pkg_dir = pkg_dir,
+        dir = pkg_dir,
         file_pattern = "logo.png"
     )
     fs::file_copy(

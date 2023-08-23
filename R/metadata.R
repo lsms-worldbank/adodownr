@@ -1,12 +1,13 @@
 find_file_in_pkg <- function(
-    pkg_dir,
-    file_pattern
+    dir,
+    file_pattern,
+    recurse = TRUE
 ) {
 
     pkg_file <- fs::dir_ls(
-        path = pkg_dir, 
+        path = dir,
         regexp = file_pattern,
-        recurse = TRUE
+        recurse = recurse
     )
 
     return(pkg_file)

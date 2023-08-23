@@ -1,9 +1,9 @@
 #' Create Quarto site folders
-#' 
+#'
 #' Create folders for site, reference, articles, and images (e.g., logos)
-#' 
+#'
 #' @param site_dir Charcter. Directory of the target site.
-#' 
+#'
 #' @importFrom fs dir_create
 create_folders <- function(site_dir) {
 
@@ -22,11 +22,11 @@ create_folders <- function(site_dir) {
 }
 
 #' Compose YAML for Quarto package website
-#' 
+#'
 #' @param pkg_dir Character. Path to root of target path
-#' 
+#'
 #' @return Character. Quarto YAML
-#' 
+#'
 #' @importFrom fs path dir_exists
 #' @importFrom yaml as.yaml
 compose_quarto_yaml <- function(
@@ -34,17 +34,18 @@ compose_quarto_yaml <- function(
 ) {
 
     pkg_file <- find_file_in_pkg(
-        pkg_dir = pkg_dir,
-        file_pattern = "\\.pkg$"
+        dir = fs::path(pkg_dir, "src"),
+        file_pattern = "\\.pkg$",
+        recurse = FALSE
     )
 
     pkg <- get_pkg_metadata(pkg_file = pkg_file)
 
     # pkg_logo <- find_file_in_pkg(
-    #     pkg_dir = pkg_dir,
+    #     dir = pkg_dir,
     #     file_pattern = "logo.png"
     # )
-    # TODO: 
+    # TODO:
     # - make URI programmatically determined
     # - have image parts of specification programmatically included
     pkg_logo <- "images/logo.png"
@@ -65,7 +66,7 @@ compose_quarto_yaml <- function(
                     # specify either as a list of lists or as a data frame
                     # see here: https://github.com/vubiostat/r-yaml/tree/master#columnmajor
                     list(
-                        text = "Reference", 
+                        text = "Reference",
                         href = "reference/index.qmd"
                     ),
                     list(
@@ -127,10 +128,10 @@ compose_quarto_yaml <- function(
 }
 
 #' Write Quarto YAML to disk
-#' 
+#'
 #' @param yaml Character. YAML specification string
 #' @param site_dir Character. Directory where `_quarto.yml` should be written
-#' 
+#'
 #' @importFrom yaml write_yaml
 write_quarto_yaml <- function(
     yaml,
@@ -145,16 +146,16 @@ write_quarto_yaml <- function(
 }
 
 #' Create Quarto site YAML from source package details
-#' 
-#' @description 
+#'
+#' @description
 #' First, composes the YAML. Then writes it to disk
-#' 
+#'
 #' To compose
-#' 
+#'
 #' @param pkg_dir Character. Source package directory.
 #' @param site_dir Character. Target site directory.
-#' 
-#' @export 
+#'
+#' @export
 create_quarto_yaml <- function(
     pkg_dir,
     site_dir
@@ -184,7 +185,7 @@ create_quarto_yaml <- function(
 #                 # specify either as a list of lists or as a data frame
 #                 # see here: https://github.com/vubiostat/r-yaml/tree/master#columnmajor
 #                 list(
-#                     text = "Reference", 
+#                     text = "Reference",
 #                     href = "reference/index.qmd"
 #                 ),
 #                 list(
@@ -209,15 +210,15 @@ create_quarto_yaml <- function(
 # )
 
 #' Make article component of Quarto YAML
-#' 
+#'
 #' @description
 #' Performs the following steps:
-#' 
+#'
 #' - Compiles articles in the source package
 #' - Composes the nested list structure expected by `{yaml::as.yaml}`
-#' 
+#'
 #' @param articles_dir Character. Directory where package articles are stored
-#' 
+#'
 #' @importFrom fs dir_ls path_file fs_path
 #' @importFrom stringr str_replace
 make_article_yaml <- function(
@@ -247,7 +248,7 @@ make_article_yaml <- function(
     article_list_for_yaml <- list()
     # name each vector element as href
     # article_paths_named <- stats::setNames(
-    #     object = article_new_rel_paths, 
+    #     object = article_new_rel_paths,
     #     nm = rep("href", n_articles)
     # )
     # set i-th vector in i-th element of list
