@@ -4,10 +4,23 @@
 #'
 #' @param site_dir Charcter. Directory of the target site.
 #'
-#' @importFrom fs dir_create
-create_folders <- function(site_dir) {
+#' @importFrom fs dir_create dir_exists dir_ls dir_delete
+create_folders <- function(site_dir, rm_old_site_dir) {
 
-    # site
+    # Test if top folder exists
+    if (fs::dir_exists(site_dir)) {
+        # If files can be removed, just delete top folder
+        if (rm_old_site_dir) fs::dir_delete(site_dir)
+        # If not, throw an error if dir is not empty
+        else {
+            stopifnot(
+                "The site cannot be built as site_dir is not empty and rm_old_site_dir is not used",
+                length(fs::dir_ls(site_dir) == 0)
+            )
+        }
+    } 
+
+    # Make sure the top folder is created
     fs::dir_create(site_dir)
 
     # reference
