@@ -153,13 +153,14 @@ build_reference_index <- function(dir_in, dir_out) {
 #' @export
 build_site <- function(
     pkg_dir,
-    site_dir
+    site_dir,
+    rm_old_site_dir = FALSE
 ) {
 
     # TODO: check that pkg has expected folder structure
 
     # create folders
-    create_folders(site_dir)
+    create_folders(site_dir,rm_old_site_dir)
 
     # create index from README
     convert_readme_to_index(
