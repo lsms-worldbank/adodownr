@@ -59,9 +59,9 @@ get_cmd_short_desc <- function(file) {
     title_area <- data.frame(chr = doc[title_heading[1]:syntax_heading[1]])
     cmd_short_desc <- title_area |>
         dplyr::filter(
-            !stringr::str_detect(chr, "^Title|^#{1,2} Title") &
-            !stringr::str_detect(chr, "^Syntax|^#{1,2} Syntax") &
-            !stringr::str_detect(chr, "^==+") &
+            !stringr::str_detect(.data$chr, "^Title|^#{1,2} Title") &
+            !stringr::str_detect(.data$chr, "^Syntax|^#{1,2} Syntax") &
+            !stringr::str_detect(.data$chr, "^==+") &
             chr != ""
         ) |>
         dplyr::pull() |>
