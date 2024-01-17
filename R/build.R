@@ -206,16 +206,22 @@ build_site <- function(
         pkg_dir = pkg_dir,
         file_pattern = "logo.png"
     )
-    fs::file_copy(
-        path = pkg_logo,
-        new_path = fs::path(site_dir, "images", "logo.png"),
-        overwrite = TRUE
-    )
+    pkg_logo_exists <- length(pkg_logo) >= 1
+    if (pkg_logo_exists == TRUE) {
+
+        fs::file_copy(
+            path = pkg_logo,
+            new_path = fs::path(site_dir, "images", "logo.png"),
+            overwrite = TRUE
+        )
+
+    }
 
     # create YAML
     create_quarto_yaml(
         pkg_dir = pkg_dir,
-        site_dir = site_dir
+        site_dir = site_dir,
+        pkg_logo_exists = pkg_logo_exists
     )
 
     # TODO: find problem; fix it

@@ -4,12 +4,15 @@
 \alias{create_quarto_yaml}
 \title{Create Quarto site YAML from source package details}
 \usage{
-create_quarto_yaml(pkg_dir, site_dir)
+create_quarto_yaml(pkg_dir, site_dir, pkg_logo_exists = FALSE)
 }
 \arguments{
 \item{pkg_dir}{Character. Source package directory.}
 
 \item{site_dir}{Character. Target site directory.}
+
+\item{pkg_logo_exists}{Boolean. Whether package hex image exists
+(or can be found).}
 }
 \description{
 First, composes the YAML. Then writes it to disk
