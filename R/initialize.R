@@ -3,16 +3,21 @@
 #' Create folders for site, reference, articles, and images (e.g., logos)
 #'
 #' @param site_dir Charcter. Directory of the target site.
+#' @param rm_old_site_dir Boolean. If `TRUE`, delete old site. Otherwise, keep.
 #'
 #' @importFrom fs dir_create dir_exists dir_ls dir_delete
-create_folders <- function(site_dir, rm_old_site_dir) {
+create_folders <- function(
+    site_dir, 
+    rm_old_site_dir = TRUE
+) {
 
     # Test if top folder exists
     if (fs::dir_exists(site_dir)) {
         # If files can be removed, just delete top folder
-        if (rm_old_site_dir) fs::dir_delete(site_dir)
+        if (rm_old_site_dir == TRUE) {
+            fs::dir_delete(site_dir)
         # If not, throw an error if dir is not empty
-        else {
+        } else {
             stopifnot(
                 "The site cannot be built as site_dir is not empty and rm_old_site_dir is not used",
                 length(fs::dir_ls(site_dir) == 0)
@@ -52,7 +57,7 @@ compose_quarto_yaml <- function(
         recurse = FALSE
     )
 
-    pkg <- get_pkg_metadata(pkg_file = pkg_file)
+    pkg <- get_pkg_metadata(pkg_file_path = pkg_file)
 
     # pkg_logo <- find_file_in_pkg(
     #     dir = pkg_dir,

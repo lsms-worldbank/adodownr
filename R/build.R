@@ -146,6 +146,7 @@ build_reference_index <- function(dir_in, dir_out) {
 #'
 #' @param pkg_dir Charcter. Directory of the source package.
 #' @param site_dir Charcter. Directory of the target site.
+#' @param rm_old_site_dir Boolean. If `TRUE`, delete old site. Otherwise, keep.
 #'
 #' @importFrom fs file_move path file_exists
 #' @importFrom quarto quarto_path quarto_preview
@@ -154,13 +155,13 @@ build_reference_index <- function(dir_in, dir_out) {
 build_site <- function(
     pkg_dir,
     site_dir,
-    rm_old_site_dir = FALSE
+    rm_old_site_dir = TRUE
 ) {
 
     # TODO: check that pkg has expected folder structure
 
     # create folders
-    create_folders(site_dir,rm_old_site_dir)
+    create_folders(site_dir, rm_old_site_dir = rm_old_site_dir)
 
     # create index from README
     convert_readme_to_index(
