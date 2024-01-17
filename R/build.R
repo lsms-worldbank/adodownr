@@ -205,7 +205,7 @@ build_site <- function(
 
     # copy logo over
     pkg_logo <- find_file_in_pkg(
-        dir = pkg_dir,
+        dir = fs::path(pkg_dir, "src"),
         file_pattern = "logo.png"
     )
     fs::file_copy(
