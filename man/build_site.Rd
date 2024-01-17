@@ -4,12 +4,14 @@
 \alias{build_site}
 \title{Build Quarto site from Stata package files}
 \usage{
-build_site(pkg_dir, site_dir)
+build_site(pkg_dir, site_dir, rm_old_site_dir = TRUE)
 }
 \arguments{
 \item{pkg_dir}{Charcter. Directory of the source package.}
 
 \item{site_dir}{Charcter. Directory of the target site.}
+
+\item{rm_old_site_dir}{Boolean. If \code{TRUE}, delete old site. Otherwise, keep.}
 }
 \description{
 This single function performs several actions:
