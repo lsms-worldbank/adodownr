@@ -5,6 +5,8 @@
 #' Markdown to Quarto
 #' 
 #' @param dir_in Character. Source package directory where files are located.
+#' @param exclude Character. Files to exclude from building process. 
+#' Specified as a regular expression.
 #' @param dir_out Character. Target site directory where files are written.
 #' 
 #' @importFrom fs dir_ls
@@ -15,10 +17,22 @@
 #' @export 
 build_files <- function(
     dir_in,
+    exclude = NULL,
     dir_out
 ) {
 
+    # collect list of all Markdown files
     files <- fs::dir_ls(path = dir_in, regexp = "\\.md$")
+    
+    # exclude files, if specified
+    if (!is.null(exclude)) {
+        files <- grep(
+            x = files,
+            pattern = exclude,
+            invert = TRUE,
+            value = TRUE
+        )
+    }
 
     purrr::walk(
         .x = files,
@@ -74,6 +88,8 @@ get_cmd_short_desc <- function(file) {
 #' Build reference index from files in source package help folder
 #' 
 #' @param dir_in Character. Help/reference file folder of source package.
+#' @param exclude Character. Files to exclude from building process. 
+#' Specified as a regular expression.
 #' @param dir_out Character. Reference foler of target documentation site.
 #' 
 #' @importFrom fs dir_ls path_file path_ext_remove path
@@ -83,12 +99,27 @@ get_cmd_short_desc <- function(file) {
 #' @return None. Side-effect of writing a file to disk
 #' 
 #' @export 
-build_reference_index <- function(dir_in, dir_out) {
+build_reference_index <- function(
+    dir_in, 
+    exclude = NULL,
+    dir_out
+) {
 
+    # collect list of help files, excluding files if needed
     help_pkg_paths <- fs::dir_ls(path = dir_in, regexp = "\\.md$")
+    if (!is.null(exclude)) {
+        help_pkg_paths <- grep(
+            x = help_pkg_paths,
+            pattern = exclude,
+            invert = TRUE,
+            value = TRUE
+        )
+    }
+
     help_names <- help_pkg_paths |>
         fs::path_file() |>
         fs::path_ext_remove()
+    
     help_description <- purrr::map_chr(
         .x = help_pkg_paths,
         .f = ~ get_cmd_short_desc(file = .x)
@@ -182,12 +213,14 @@ build_site <- function(
     site_ref_dir <- fs::path(site_dir, "reference")
     build_files(
         dir_in = pkg_ref_dir,
+        exclude = "README.md",
         dir_out = site_ref_dir
     )
 
     # build reference index
     build_reference_index(
         dir_in = pkg_ref_dir,
+        exclude = "README.md",
         dir_out = site_ref_dir
     )
 
@@ -197,6 +230,7 @@ build_site <- function(
     if (fs::dir_exists(pkg_vig_dir)) {
         build_files(
             dir_in = pkg_vig_dir,
+            exclude = "README.md",
             dir_out = site_vig_dir
         )
     }
