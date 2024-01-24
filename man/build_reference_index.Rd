@@ -4,10 +4,13 @@
 \alias{build_reference_index}
 \title{Build reference index from files in source package help folder}
 \usage{
-build_reference_index(dir_in, dir_out)
+build_reference_index(dir_in, exclude = NULL, dir_out)
 }
 \arguments{
 \item{dir_in}{Character. Help/reference file folder of source package.}
+
+\item{exclude}{Character. Files to exclude from building process.
+Specified as a regular expression.}
 
 \item{dir_out}{Character. Reference foler of target documentation site.}
 }
