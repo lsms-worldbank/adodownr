@@ -4,10 +4,13 @@
 \alias{build_files}
 \title{Build Quarto files from Markdown}
 \usage{
-build_files(dir_in, dir_out)
+build_files(dir_in, exclude = NULL, dir_out)
 }
 \arguments{
 \item{dir_in}{Character. Source package directory where files are located.}
+
+\item{exclude}{Character. Files to exclude from building process.
+Specified as a regular expression.}
 
 \item{dir_out}{Character. Target site directory where files are written.}
 }

@@ -4,10 +4,13 @@
 \alias{compose_quarto_yaml}
 \title{Compose YAML for Quarto package website}
 \usage{
-compose_quarto_yaml(pkg_dir)
+compose_quarto_yaml(pkg_dir, pkg_logo_exists)
 }
 \arguments{
 \item{pkg_dir}{Character. Path to root of target path}
+
+\item{pkg_logo_exists}{Boolean. Whether package hex image exists
+(or can be found).}
 }
 \value{
 Character. Quarto YAML

@@ -42,13 +42,16 @@ create_folders <- function(
 #' Compose YAML for Quarto package website
 #'
 #' @param pkg_dir Character. Path to root of target path
-#'
+#' @param pkg_logo_exists Boolean. Whether package hex image exists
+#' (or can be found).
+#' 
 #' @return Character. Quarto YAML
 #'
 #' @importFrom fs path dir_exists
 #' @importFrom yaml as.yaml
 compose_quarto_yaml <- function(
-    pkg_dir
+    pkg_dir,
+    pkg_logo_exists
 ) {
 
     pkg_file <- find_file_in_pkg(
@@ -107,6 +110,11 @@ compose_quarto_yaml <- function(
             )
         )
     )
+
+    # remove image URI if no package logo provided (or exists where expected)
+    if (pkg_logo_exists == FALSE) {
+        spec$website$favicon <- NULL
+    }
 
     # determine whether package has articles
     path_articles <- fs::path(pkg_dir, "src", "vignettes")
@@ -172,15 +180,22 @@ write_quarto_yaml <- function(
 #'
 #' @param pkg_dir Character. Source package directory.
 #' @param site_dir Character. Target site directory.
-#'
-#' @export
+#' @param pkg_logo_exists Boolean. Whether package hex image exists
+#' (or can be found).
+#' 
+#' @export 
 create_quarto_yaml <- function(
     pkg_dir,
-    site_dir
+    site_dir,
+    pkg_logo_exists = FALSE
 ) {
 
     # compose Quarto site YAML from package details
-    site_yaml <- compose_quarto_yaml(pkg_dir = pkg_dir)
+    # and presence or not of a package logo
+    site_yaml <- compose_quarto_yaml(
+        pkg_dir = pkg_dir, 
+        pkg_logo_exists = pkg_logo_exists
+    )
 
     # write _quarto.yml to root of site directory
     write_quarto_yaml(
