@@ -4,10 +4,12 @@
 \alias{create_folders}
 \title{Create Quarto site folders}
 \usage{
-create_folders(site_dir)
+create_folders(site_dir, rm_old_site_dir = TRUE)
 }
 \arguments{
 \item{site_dir}{Charcter. Directory of the target site.}
+
+\item{rm_old_site_dir}{Boolean. If \code{TRUE}, delete old site. Otherwise, keep.}
 }
 \description{
 Create folders for site, reference, articles, and images (e.g., logos)
