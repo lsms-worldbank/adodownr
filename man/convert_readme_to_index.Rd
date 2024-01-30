@@ -13,5 +13,5 @@ convert_readme_to_index(pkg_dir, site_dir)
 }
 \description{
 Simply copy the README file in the package directory to
-the index file in the site directory.
+the index file in the site directory, overwriting if it already exists.
 }
