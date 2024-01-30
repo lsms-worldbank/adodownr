@@ -245,12 +245,15 @@ extract_metadata <- function(
         no = FALSE
     )
 
+    # if entry exists, extract it
+    # otherwise, return an empty string
     metadata_entry <- ifelse(
         test = header_exists == TRUE & entry_exists == TRUE,
         yes = stringr::str_remove(
             string = pkg_lines[header_loc + 1],
             pattern = stringr::fixed(entry_prefix)
-        )
+        ),
+        no = ""
     )
 
     return(metadata_entry)
