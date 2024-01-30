@@ -8,7 +8,7 @@
 #' @importFrom fs dir_create dir_exists dir_ls dir_delete
 create_folders <- function(
     site_dir, 
-    rm_old_site_dir = TRUE
+    rm_old_site_dir = FALSE
 ) {
 
     # delete site directory from prior run

@@ -177,7 +177,8 @@ build_reference_index <- function(
 #'
 #' @param pkg_dir Charcter. Directory of the source package.
 #' @param site_dir Charcter. Directory of the target site.
-#' @param rm_old_site_dir Boolean. If `TRUE`, delete old site. Otherwise, keep.
+#' @param rm_old_site_dir Boolean. If `TRUE`, delete old site. Otherwise, keep
+#' but overwrite same-named files.
 #'
 #' @importFrom fs file_move path file_exists
 #' @importFrom quarto quarto_path quarto_preview
@@ -186,7 +187,7 @@ build_reference_index <- function(
 build_site <- function(
     pkg_dir,
     site_dir,
-    rm_old_site_dir = TRUE
+    rm_old_site_dir = FALSE
 ) {
 
     # TODO: check that pkg has expected folder structure
