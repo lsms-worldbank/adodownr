@@ -11,19 +11,13 @@ create_folders <- function(
     rm_old_site_dir = TRUE
 ) {
 
-    # Test if top folder exists
-    if (fs::dir_exists(site_dir)) {
-        # If files can be removed, just delete top folder
-        if (rm_old_site_dir == TRUE) {
-            fs::dir_delete(site_dir)
-        # If not, throw an error if dir is not empty
-        } else {
-            stopifnot(
-                "The site cannot be built as site_dir is not empty and rm_old_site_dir is not used",
-                length(fs::dir_ls(site_dir) == 0)
-            )
-        }
-    } 
+    # delete site directory from prior run
+    # if it already exist and
+    # if instructed to do so
+    site_dir_exists <- fs::dir_exists(site_dir)
+    if (site_dir_exists == TRUE & rm_old_site_dir == TRUE) {
+        fs::dir_delete(site_dir)
+    }
 
     # Make sure the top folder is created
     fs::dir_create(site_dir)
