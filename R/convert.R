@@ -156,7 +156,7 @@ convert_md_to_qmd <- function(
 #' 
 #' @description 
 #' Simply copy the README file in the package directory to 
-#' the index file in the site directory.
+#' the index file in the site directory, overwriting if it already exists.
 #' 
 #' @param pkg_dir Charcter. Directory of the source package.
 #' @param site_dir Charcter. Directory of the target site.
@@ -168,7 +168,8 @@ convert_readme_to_index <- function(pkg_dir, site_dir) {
 
     fs::file_copy(
         path = fs::path(pkg_dir, "README.md"),
-        new_path = fs::path(site_dir, "index.qmd")
+        new_path = fs::path(site_dir, "index.qmd"),
+        overwrite = TRUE
     )
 
 }
