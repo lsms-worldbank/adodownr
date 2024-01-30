@@ -75,6 +75,7 @@ compose_quarto_yaml <- function(
             favicon = pkg_logo,
             `page-navigation` = TRUE,
             navbar = list(
+                background = "primary",
                 search = TRUE,
                 logo = pkg_logo,
                 left = list(
