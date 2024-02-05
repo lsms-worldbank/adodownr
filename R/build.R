@@ -76,7 +76,7 @@ get_cmd_short_desc <- function(file) {
             !stringr::str_detect(.data$chr, "^Title|^#{1,2} Title") &
             !stringr::str_detect(.data$chr, "^Syntax|^#{1,2} Syntax") &
             !stringr::str_detect(.data$chr, "^==+") &
-            chr != ""
+            .data$chr != ""
         ) |>
         dplyr::pull() |>
         stringr::str_replace(".+- (.+)", "\\1")
