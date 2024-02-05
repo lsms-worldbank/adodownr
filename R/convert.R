@@ -137,6 +137,16 @@ convert_md_to_qmd <- function(
         }
     }
 
+    # adjust the file path of images
+    # in package directory, images are in `src/dev/assets` 
+    # in the site, images are `images`
+    file_raw <- gsub(
+        x = file_raw,
+        pattern = "src/dev/assets",
+        replacement = "images",
+        fixed = TRUE
+    )
+
     # construct path for file to create
     file_name <- path_in |>
         fs::path_file() |>
@@ -166,10 +176,23 @@ convert_md_to_qmd <- function(
 #' @export 
 convert_readme_to_index <- function(pkg_dir, site_dir) {
 
-    fs::file_copy(
-        path = fs::path(pkg_dir, "README.md"),
-        new_path = fs::path(site_dir, "index.qmd"),
-        overwrite = TRUE
+    # ingest file
+    file_raw <- readLines(con = fs::path(pkg_dir, "README.md"))
+
+    # adjust the file path of images
+    # in package directory, images are in `src/dev/assets` 
+    # in the site, images are `images`
+    file_raw <- gsub(
+        x = file_raw,
+        pattern = "src/dev/assets",
+        replacement = "images",
+        fixed = TRUE
+    )
+
+    # save with qmd file extension
+    writeLines(
+        text = file_raw,
+        con = fs::path(site_dir, "index.qmd")
     )
 
 }
