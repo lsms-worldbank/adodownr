@@ -9,24 +9,37 @@ build_custom_reference_index <- function(
 
   # ingest YAML
   yaml <- yaml::yaml.load_file(
-    input = fs::path(dir_in, "src/dev/assets/refence_index.yml")
+    input = fs::path(dir_in, "src/dev/assets/reference_index.yml")
   )
 
   # find section titles in YAML
-  section_indices <- find_section(yaml = yaml)
+  title_indices <- find_titles(yaml = yaml)
 
-  # write lines as character vector
-  reference_index_content <- purrr::map_chr(
-    .x = section_indices,
+  # write lines as list of character vectors
+  custom_index_content <- purrr::map(
+    .x = title_indices,
     .f = ~ write_section(
+      dir_in = dir_in,
       yaml = yaml,
       index = .x
     )
   )
 
+  # convert content from list to character vector
+  custom_index_content <- purrr::as_vector(custom_index_content)
+
+  # pre-pend YAML header with document title
+  index_content <- c(
+    "---",
+    "title: Function reference",
+    "---",
+    "",
+    custom_index_content  
+  )
+
   # write to disk
   writeLines(
-      text = reference_index_content,
+    text = index_content,
       con = fs::path(dir_out, "index.qmd")
   )
 
