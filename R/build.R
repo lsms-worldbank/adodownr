@@ -220,12 +220,32 @@ build_site <- function(
         dir_out = site_ref_dir
     )
 
-    # build reference index
-    build_reference_index(
-        dir_in = pkg_ref_dir,
-        exclude = "README.md",
-        dir_out = site_ref_dir
+    # determine whether YAML schema for index page is provided
+    has_yaml_schema <- fs::file_exists(
+        path = fs::path(
+            pkg_dir, "src", "dev", "assets", "reference_index.yml"
+        )
     )
+
+    # build reference index
+    # if YAML schema available, build a custom index page using the schema
+    if (has_yaml_schema == TRUE) {
+
+        build_custom_reference_index(
+            dir_in = pkg_dir,
+            dir_out = site_ref_dir
+        )
+
+    # otherwise, build the default index page
+    } else {
+
+        build_reference_index(
+            dir_in = pkg_ref_dir,
+            exclude = "README.md",
+            dir_out = site_ref_dir
+        )
+
+    }
 
     # build vignettes
     pkg_vig_dir <- fs::path(pkg_dir, "src", "vignettes")
