@@ -110,7 +110,7 @@ write_section <- function(
   next_index <- index + 1
   next_is_sub_section <- ifelse(
     # check whether the next index exists in the YAML
-    test = next_index <= length(yaml),
+    test = next_index <= length(yaml$reference),
     # if so return whether it's a sub-section
     yes = rlang::has_name(
     x = yaml$reference[[next_index]], 
