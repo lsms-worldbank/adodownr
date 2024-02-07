@@ -133,6 +133,7 @@ write_section <- function(
 
     # indices of next section(s) before next title
     # if no title after current index
+    if (length(next_title_index) == 0 | is.na(next_title_index)) {
       next_section_indices <- c(next_index:length(yaml$reference))
     # if there is another title after current index
     } else {
