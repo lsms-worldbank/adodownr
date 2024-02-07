@@ -105,8 +105,7 @@ write_section <- function(
   # TODO: hand if does (not) exist
   description <- yaml$reference[[index]]$desc
 
-  # if next index is a sub-section, write write that sub-section
-  # from the next index until the next title
+
   next_index <- index + 1
   next_is_sub_section <- ifelse(
     # check whether the next index exists in the YAML
@@ -119,7 +118,9 @@ write_section <- function(
     # if the next index exist, return `FALSE`
     no = FALSE
   )
-
+  
+  # if next index is a sub-section, write that sub-section
+  # from the next index until the next title, using `write_sections()`
   if (next_is_sub_section == TRUE) {
     
     # index of next title
@@ -153,6 +154,8 @@ write_section <- function(
     # convert from list to character vector
     section_contents <- purrr::as_vector(section_contents)
 
+  # if the next section is not a sub-section, then write the contents
+  # of the current section, using `write_contents()`
   } else if (next_is_sub_section == FALSE) {
 
     section_contents <- write_contents(
@@ -227,7 +230,7 @@ write_contents <- function(
 ) {
 
   # compile a list of the command names provided in the YAML's `contents` field
-  help_names <- yaml$reference[[index]]$contents %>%
+  help_names <- yaml$reference[[index]]$contents |>
     as.list()
 
   # get the file paths for the command names compiled above
