@@ -19,5 +19,6 @@ Imports:
     glue,
     purrr,
     quarto,
+    rlang,
     stringr,
     yaml
