@@ -158,7 +158,7 @@ write_section <- function(
     section_contents <- write_contents(
       dir_in = dir_in,
       yaml = yaml, 
-      index = next_index
+      index = index
     )
 
   }
