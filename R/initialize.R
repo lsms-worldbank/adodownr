@@ -41,8 +41,9 @@ create_folders <- function(
 #' 
 #' @return Character. Quarto YAML
 #'
-#' @importFrom fs path dir_exists
+#' @importFrom fs path dir_ls file_exists
 #' @importFrom yaml as.yaml
+#' @importFrom stringr str_subset
 compose_quarto_yaml <- function(
     pkg_dir,
     pkg_logo_exists
