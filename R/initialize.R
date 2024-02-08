@@ -114,6 +114,13 @@ compose_quarto_yaml <- function(
         spec$website$favicon <- NULL
     }
 
+    # remove news entry in navbar if no news file found
+    news_path <- fs::path(pkg_dir, "news.md")
+    has_news <- fs::file_exists(path = news_path)
+    if (has_news == FALSE) {
+        spec$website$navbar$left[[3]] <- NULL
+    }
+
     # populate/delete articles navbar entry as a function of articles found
     # determine whether package has articles
     path_articles <- fs::path(pkg_dir, "src", "vignettes")
