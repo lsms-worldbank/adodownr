@@ -1,3 +1,86 @@
+# ==============================================================================
+# Default reference index
+# ==============================================================================
+
+#' Build reference index from files in source package help folder
+#'
+#' @param dir_in Character. Help/reference file folder of source package.
+#' @param exclude Character. Files to exclude from building process. 
+#' Specified as a regular expression.
+#' @param dir_out Character. Reference foler of target documentation site.
+#'
+#' @importFrom fs dir_ls path_file path_ext_remove path
+#' @importFrom purrr map_chr pmap_chr
+#' @importFrom glue glue
+#'
+#' @return None. Side-effect of writing a file to disk
+#' 
+#' @export 
+build_reference_index <- function(
+    dir_in, 
+    exclude = NULL,
+    dir_out
+) {
+
+    # collect list of help files, excluding files if needed
+    help_pkg_paths <- fs::dir_ls(path = dir_in, regexp = "\\.md$")
+    if (!is.null(exclude)) {
+        help_pkg_paths <- grep(
+            x = help_pkg_paths,
+            pattern = exclude,
+            invert = TRUE,
+            value = TRUE
+        )
+    }
+
+    help_names <- help_pkg_paths |>
+        fs::path_file() |>
+        fs::path_ext_remove()
+    
+    help_description <- purrr::map_chr(
+        .x = help_pkg_paths,
+        .f = ~ get_cmd_short_desc(file = .x)
+    )
+    help_site_paths <- purrr::map_chr(
+        .x = help_names,
+        .f = ~ fs::path("/reference", paste0(.x, ".qmd"))
+    )
+
+    tbl_header <- c(
+        "Functions | Description",
+        "|---|---|"
+    )
+
+    tbl_body <- purrr::pmap_chr(
+        .l = list(
+            func = as.list(help_names),
+            path = as.list(help_site_paths),
+            desc = as.list(help_description)
+        ),
+        .f = ~ glue::glue("|[{..1}]({..2})|{..3}|")
+    )
+
+    tbl <- c(tbl_header, tbl_body)
+
+    index_content <- c(
+        "---",
+        "title: Function reference",
+        "---",
+        "",
+        tbl
+    )
+
+    writeLines(
+        text = index_content,
+        con = fs::path(dir_out, "index.qmd")
+    )
+
+}
+
+# ==============================================================================
+# Custom reference index
+# ==============================================================================
+
 #' Build custom reference index
 #' 
 #' @inheritParams build_reference_index
