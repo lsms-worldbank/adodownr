@@ -109,6 +109,10 @@ compose_quarto_yaml <- function(
         )
     )
 
+    # add/remove elements from spec
+    # NOTE: move from right to left to avoid problems for operations that rely
+    # on thé index of the entry
+
     # remove image URI if no package logo provided (or exists where expected)
     if (pkg_logo_exists == FALSE) {
         spec$website$favicon <- NULL
