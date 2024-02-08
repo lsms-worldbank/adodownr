@@ -85,6 +85,9 @@ compose_quarto_yaml <- function(
                         text = "Reference",
                         href = "reference/index.qmd"
                     ),
+                    # placeholder for articles
+                    list(
+                    ),
                     list(
                         text = "News",
                         hrfef = "news.qmd"
@@ -111,9 +114,13 @@ compose_quarto_yaml <- function(
         spec$website$favicon <- NULL
     }
 
+    # populate/delete articles navbar entry as a function of articles found
     # determine whether package has articles
     path_articles <- fs::path(pkg_dir, "src", "vignettes")
-    has_articles <- fs::dir_exists(path = path_articles)
+    n_articles <- fs::dir_ls(path_articles, regexp = "\\.md") |>
+        stringr::str_subset(pattern = "README", negate = TRUE) |>
+        length()
+    has_articles <- n_articles > 0
 
     # if there are articles, create articles entry in navbar
     if (has_articles) {
@@ -124,6 +131,9 @@ compose_quarto_yaml <- function(
             text = "Articles",
             menu = article_list
         )
+    # otherwise, remove placeholder entry for articles
+    } else {
+        spec$website$navbar$left[[2]] <- NULL
     }
 
     # convert specification list to YAML
