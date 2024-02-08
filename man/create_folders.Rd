@@ -4,7 +4,7 @@
 \alias{create_folders}
 \title{Create Quarto site folders}
 \usage{
-create_folders(site_dir, rm_old_site_dir = TRUE)
+create_folders(site_dir, rm_old_site_dir = FALSE)
 }
 \arguments{
 \item{site_dir}{Charcter. Directory of the target site.}
