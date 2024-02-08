@@ -90,7 +90,7 @@ compose_quarto_yaml <- function(
                     ),
                     list(
                         text = "News",
-                        hrfef = "news.qmd"
+                        href = "news.qmd"
                     )
                 ),
                 right = list(
