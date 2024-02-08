@@ -273,6 +273,7 @@ make_article_yaml <- function(
     # obtain file names of articles
     article_file_names <- articles_dir |>
         fs::dir_ls(regexp = "\\.md$") |>
+        stringr::str_subset(pattern = "README", negate = TRUE) |>
         fs::path_file()
 
     # construct a relative path in Quarto site project
