@@ -23,15 +23,18 @@ pak::pak("arthur-shaw/adodownr")
 With great power comes great responsibility.
 
 Before adodownr can perform its feats of heroics, the target Stata
-package must use the following folder system:
+package must use the following folder system. 
+This folder system is set up automatically if using the Stata package
+[adodown](https://github.com/lsms-worldbank/adodown).
 
-    src
-    \_ ado          # <- ado files
-    \_ sthlp        # <- SMCL help files
-    \_ mdhlp        # <- Markdown help files
-    \_ vignettes    # <- Markdown vignettes
-    README.md       # <- at the root of the package
-    package.pkg     # <- can be anywhere; just needs to exist
+```
+    src/
+      \_ ado/           # <- Folder with ado files
+      \_ mdhlp/         # <- Folder with markdown help files
+      \_ vignettes/     # <- Folder with markdown vignettes
+      <packagename>.pkg # <- .pkg file in src/ folder
+    README.md           # <- at the root of the package
+```
 
 With this structure in place, `{adodownr}` can
 
