@@ -12,12 +12,13 @@ URL: https://github.com/lsms-worldbank/adodownr
 BugReports: https://github.com/lsms-worldbank/adodownr/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.0
+RoxygenNote: 7.3.1
 Imports: 
     dplyr,
     fs,
     glue,
     purrr,
     quarto,
+    rlang,
     stringr,
     yaml
