@@ -41,8 +41,9 @@ create_folders <- function(
 #' 
 #' @return Character. Quarto YAML
 #'
-#' @importFrom fs path dir_exists
+#' @importFrom fs path dir_ls file_exists
 #' @importFrom yaml as.yaml
+#' @importFrom stringr str_subset
 compose_quarto_yaml <- function(
     pkg_dir,
     pkg_logo_exists
@@ -85,9 +86,12 @@ compose_quarto_yaml <- function(
                         text = "Reference",
                         href = "reference/index.qmd"
                     ),
+                    # placeholder for articles
+                    list(
+                    ),
                     list(
                         text = "News",
-                        hrfef = "news.qmd"
+                        href = "news.qmd"
                     )
                 ),
                 right = list(
@@ -106,14 +110,29 @@ compose_quarto_yaml <- function(
         )
     )
 
+    # add/remove elements from spec
+    # NOTE: move from right to left to avoid problems for operations that rely
+    # on thé index of the entry
+
     # remove image URI if no package logo provided (or exists where expected)
     if (pkg_logo_exists == FALSE) {
         spec$website$favicon <- NULL
     }
 
+    # remove news entry in navbar if no news file found
+    news_path <- fs::path(pkg_dir, "news.md")
+    has_news <- fs::file_exists(path = news_path)
+    if (has_news == FALSE) {
+        spec$website$navbar$left[[3]] <- NULL
+    }
+
+    # populate/delete articles navbar entry as a function of articles found
     # determine whether package has articles
     path_articles <- fs::path(pkg_dir, "src", "vignettes")
-    has_articles <- fs::dir_exists(path = path_articles)
+    n_articles <- fs::dir_ls(path_articles, regexp = "\\.md") |>
+        stringr::str_subset(pattern = "README", negate = TRUE) |>
+        length()
+    has_articles <- n_articles > 0
 
     # if there are articles, create articles entry in navbar
     if (has_articles) {
@@ -124,6 +143,9 @@ compose_quarto_yaml <- function(
             text = "Articles",
             menu = article_list
         )
+    # otherwise, remove placeholder entry for articles
+    } else {
+        spec$website$navbar$left[[2]] <- NULL
     }
 
     # convert specification list to YAML
@@ -256,6 +278,7 @@ make_article_yaml <- function(
     # obtain file names of articles
     article_file_names <- articles_dir |>
         fs::dir_ls(regexp = "\\.md$") |>
+        stringr::str_subset(pattern = "README", negate = TRUE) |>
         fs::path_file()
 
     # construct a relative path in Quarto site project
