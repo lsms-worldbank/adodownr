@@ -105,7 +105,7 @@ get_cmd_short_desc <- function(file) {
 #' @param rm_old_site_dir Boolean. If `TRUE`, delete old site. Otherwise, keep
 #' but overwrite same-named files.
 #'
-#' @importFrom fs file_move path file_exists
+#' @importFrom fs file_move path file_exists dir_ls file_copy
 #' @importFrom quarto quarto_path quarto_preview
 #'
 #' @export
@@ -195,6 +195,32 @@ build_site <- function(
             path = pkg_logo,
             new_path = fs::path(site_dir, "images", "logo.png"),
             overwrite = TRUE
+        )
+
+    }
+
+    # copy stylesheets, if they exist in package folder
+    style_dir <- fs::path(pkg_dir, "src", "dev", "assets")
+    # css
+    css_files <- fs::dir_ls(path = style_dir, regexp = "\\.css") |>
+        fs::path_file()
+    if (length(css_files)) {
+
+        fs::file_copy(
+            path = fs::path(style_dir, css_files),
+            new_path = fs::path(site_dir, "style", css_files)
+        )
+
+    }
+
+    # scss
+    scss_files <- fs::dir_ls(path = style_dir, regexp = "\\.scss") |>
+        fs::path_file()
+    if (length(scss_files)) {
+
+        fs::file_copy(
+            path = fs::path(style_dir, scss_files),
+            new_path = fs::path(site_dir, "style", scss_files)
         )
 
     }

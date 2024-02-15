@@ -31,6 +31,9 @@ create_folders <- function(
     # images
     fs::dir_create(fs::path(site_dir, "images"))
 
+    # style
+    fs::dir_create(fs::path(site_dir, "style"))
+
 }
 
 #' Compose YAML for Quarto package website
@@ -41,7 +44,7 @@ create_folders <- function(
 #' 
 #' @return Character. Quarto YAML
 #'
-#' @importFrom fs path dir_ls file_exists
+#' @importFrom fs path dir_exists file_exists dir_ls path_file
 #' @importFrom yaml as.yaml
 #' @importFrom stringr str_subset
 compose_quarto_yaml <- function(
@@ -105,6 +108,8 @@ compose_quarto_yaml <- function(
         format = list(
             html = list(
                 theme = "cosmo",
+                # empty container to drop or populate
+                css = list(),
                 toc = TRUE
             )
         )
@@ -146,6 +151,51 @@ compose_quarto_yaml <- function(
     # otherwise, remove placeholder entry for articles
     } else {
         spec$website$navbar$left[[2]] <- NULL
+    }
+
+    # determine whether CSS and/or SCSS files exist
+    style_dir <- fs::path(pkg_dir, "src", "dev", "assets")
+    # css
+    css_paths <- fs::dir_ls(path = style_dir, regexp = "\\.css")
+    has_css <- ifelse(
+        test = length(css_paths) > 0,
+        yes = TRUE,
+        no = FALSE
+    )
+    # scss
+    scss_paths <- fs::dir_ls(path = style_dir, regexp = "\\.scss")
+    has_scss <- ifelse(
+        test = length(scss_paths) > 0,
+        yes = TRUE,
+        no = FALSE
+    )
+
+    # compose list of stylesheets in YAML
+    # css
+    if (has_css) {
+        # collect css file names
+        css_files <- css_paths |>
+            fs::path_file()
+        
+        # pass to the list in YAML object
+        spec$format$html$css <- fs::path("style", css_files)
+
+    } else {
+
+        spec$format$html$css <- NULL
+
+    }
+    # css
+    # keep default `cosmo` theme and add scss files, if applicable
+    if (has_scss) {
+
+        # compile scss files
+        scss_files <- scss_paths |>
+            fs::path_file()
+        
+        # update theme parameter
+        spec$format$html$theme <- c("cosmo", fs::path("style", scss_files))
+
     }
 
     # convert specification list to YAML
