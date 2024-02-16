@@ -34,10 +34,10 @@ check_has_yaml <- function(file) {
 #' or follows its format, the function extracts the command name where it is
 #' expected to be found.
 #' 
+#' @param file_lines Character vector of lines read from a file.
+#' 
 #' @return Character. If command name found, that text. Otherwise, empty
 #' string.
-#' 
-#' @param file_lines
 #' 
 #' @importFrom stringr str_extract 
 extract_cmd_name_from_md <- function(file_lines) {
