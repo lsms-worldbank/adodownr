@@ -303,7 +303,7 @@ write_sub_section <- function(
 #' 
 #' @importFrom fs dir_ls path
 #' @importFrom glue glue glue_collapse
-#' @importFrom purrr map_chr pmap_chr
+#' @importFrom purrr as_vector map_chr pmap_chr
 #' 
 #' @seealso build_reference_index
 write_contents <- function(
@@ -317,10 +317,14 @@ write_contents <- function(
     as.list()
 
   # get the file paths for the command names compiled above
-  help_pkg_paths <- fs::dir_ls(
-    path = dir_in, 
-    regexp = glue::glue("({glue::glue_collapse(x = unlist(help_names), sep = '|')})\\.md"),
-    recurse = TRUE
+  help_pkg_paths <- purrr::map_chr(
+    .x = purrr::as_vector(help_names),
+    .f = ~ fs::dir_ls(
+      path = dir_in,
+      type = "file",
+      regexp = glue::glue("{.x}\\.md"),
+      recurse = TRUE
+    )
   )
 
   # get the description of each command
