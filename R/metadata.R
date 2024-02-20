@@ -66,11 +66,9 @@ get_pkg_metadata <- function(pkg_file_path) {
         header_text = "*** version", 
         entry_prefix = "v "
     )
-    name <- extract_metadata(
-        pkg_lines = pkg_lines,
-        header_text = "*** name",
-        entry_prefix = "d "
-    )
+    name <- pkg_file_path |>
+        fs::path_file() |>
+        fs::path_ext_remove()
     desc <- extract_metadata(
         pkg_lines = pkg_lines,
         header_text = "*** description", 
