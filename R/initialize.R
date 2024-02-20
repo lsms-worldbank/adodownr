@@ -156,16 +156,24 @@ compose_quarto_yaml <- function(
     # determine whether CSS and/or SCSS files exist
     style_dir <- fs::path(pkg_dir, "src", "dev", "assets")
     # css
-    css_paths <- fs::dir_ls(path = style_dir, regexp = "\\.css")
+    css_paths <- ifelse(
+        test = fs::dir_exists(style_dir),
+        yes = fs::dir_ls(path = style_dir, regexp = "\\.css"),
+        no = character()
+    )
     has_css <- ifelse(
-        test = length(css_paths) > 0,
+        test = !is.na(css_paths) & length(css_paths) > 0,
         yes = TRUE,
         no = FALSE
     )
     # scss
-    scss_paths <- fs::dir_ls(path = style_dir, regexp = "\\.scss")
+    scss_paths <- ifelse(
+        test = fs::dir_exists(style_dir),
+        yes = fs::dir_ls(path = style_dir, regexp = "\\.scss"),
+        no = character()
+    )
     has_scss <- ifelse(
-        test = length(scss_paths) > 0,
+        test = !is.na(scss_paths) & length(scss_paths) > 0,
         yes = TRUE,
         no = FALSE
     )
@@ -185,7 +193,7 @@ compose_quarto_yaml <- function(
         spec$format$html$css <- NULL
 
     }
-    # css
+    # scss
     # keep default `cosmo` theme and add scss files, if applicable
     if (has_scss) {
 

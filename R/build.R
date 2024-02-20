@@ -200,29 +200,35 @@ build_site <- function(
     }
 
     # copy stylesheets, if they exist in package folder
+    # and if the assets folder exists
     style_dir <- fs::path(pkg_dir, "src", "dev", "assets")
-    # css
-    css_files <- fs::dir_ls(path = style_dir, regexp = "\\.css") |>
-        fs::path_file()
-    if (length(css_files)) {
+    style_dir_exists <- fs::dir_exists(style_dir)
 
-        fs::file_copy(
-            path = fs::path(style_dir, css_files),
-            new_path = fs::path(site_dir, "style", css_files)
-        )
+    if (style_dir_exists) {
+        
+        # css
+        css_files <- fs::dir_ls(path = style_dir, regexp = "\\.css") |>
+            fs::path_file()
+        if (length(css_files)) {
 
-    }
+            fs::file_copy(
+                path = fs::path(style_dir, css_files),
+                new_path = fs::path(site_dir, "style", css_files)
+            )
 
-    # scss
-    scss_files <- fs::dir_ls(path = style_dir, regexp = "\\.scss") |>
-        fs::path_file()
-    if (length(scss_files)) {
+        }
 
-        fs::file_copy(
-            path = fs::path(style_dir, scss_files),
-            new_path = fs::path(site_dir, "style", scss_files)
-        )
+        # scss
+        scss_files <- fs::dir_ls(path = style_dir, regexp = "\\.scss") |>
+            fs::path_file()
+        if (length(scss_files)) {
 
+            fs::file_copy(
+                path = fs::path(style_dir, scss_files),
+                new_path = fs::path(site_dir, "style", scss_files)
+            )
+
+        }
     }
 
     # create YAML
