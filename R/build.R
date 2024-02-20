@@ -105,7 +105,7 @@ get_cmd_short_desc <- function(file) {
 #' @param rm_old_site_dir Boolean. If `TRUE`, delete old site. Otherwise, keep
 #' but overwrite same-named files.
 #'
-#' @importFrom fs file_move path file_exists dir_ls file_copy
+#' @importFrom fs file_move path file_exists dir_ls file_copy path_file dir_exists
 #' @importFrom quarto quarto_path quarto_preview
 #'
 #' @export

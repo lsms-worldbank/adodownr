@@ -47,6 +47,8 @@ find_file_in_pkg <- function(
 #' - `url`. URL of repository where package source code stored.
 #' - `date`.  Date current Stata package version released.
 #' 
+#' @importFrom fs path_file path_ext_remove
+#' 
 #' @noRd 
 get_pkg_metadata <- function(pkg_file_path) {
 
